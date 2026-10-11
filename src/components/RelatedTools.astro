@@ -1,0 +1,95 @@
+---
+import { TOOLS, type ToolMeta } from '../data/tools';
+
+interface Props {
+  currentToolId?: string;
+}
+
+const { currentToolId } = Astro.props;
+const filteredTools = TOOLS.filter(t => t.id !== currentToolId);
+---
+
+<section class="related-tools-section">
+  <div class="section-title-wrap">
+    <h2>More Browser Audio Utilities</h2>
+    <p>Explore free client-side diagnostic and audio testing tools.</p>
+  </div>
+
+  <div class="tools-grid">
+    {filteredTools.map((tool: ToolMeta) => (
+      <a href={tool.path} class="tool-card card">
+        <div class="tool-card-top">
+          {tool.badge && <span class="badge">{tool.badge}</span>}
+          <h3 class="tool-card-title">{tool.shortName}</h3>
+        </div>
+        <p class="tool-card-desc">{tool.description}</p>
+        <div class="tool-card-action">
+          <span>Open Tool</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .related-tools-section {
+    margin: 4rem 0;
+  }
+
+  .section-title-wrap {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .tool-card-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .tool-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .tool-card-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+
+  .tool-card-action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .tool-card:hover .tool-card-action svg {
+    transform: translateX(4px);
+    transition: transform var(--transition-fast);
+  }
+</style>

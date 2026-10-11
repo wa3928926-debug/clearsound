@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const breadcrumbs = [{ name: 'Safety & Disclaimer', url: '/disclaimer/' }];
+---
+
+<BaseLayout
+  title="Safety & Hardware Disclaimer – ClearSound"
+  description="Important hardware safety guidelines and disclaimer regarding ClearSound browser audio utilities."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="card content-card">
+      <h1>Safety & Hardware Disclaimer</h1>
+      <p class="article-meta">Last Updated: October 2026</p>
+
+      <div class="warning-box">
+        <strong>Important Warning:</strong> Always start audio playback at a conservative volume level (50%–70%) and increase gradually. Stop playback immediately if sound output causes physical discomfort, ear pain, or extreme mechanical distortion.
+      </div>
+
+      <h2>1. Not a Guaranteed Hardware Repair</h2>
+      <p>
+        ClearSound audio tools generate synthetic acoustic sound waves designed to create physical air vibrations. While this method can help dislodge surface water droplets and loose dust particles, it is <strong>not a guaranteed hardware repair solution</strong> for damaged speaker transducers, blown coils, or water-damaged logic boards.
+      </p>
+
+      <h2>2. Acoustic Variations Across Hardware</h2>
+      <p>
+        Audio output volume, frequency response, and physical displacement vary significantly depending on individual device hardware, speaker port design, operating system audio limits, browser implementation, and ambient environment.
+      </p>
+
+      <h2>3. User Responsibility</h2>
+      <p>
+        Users are responsible for selecting safe volume levels during playback. ClearSound assumes no responsibility for hardware degradation caused by operating device speakers at unsafe volume levels for extended periods.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .content-card { max-width: 800px; margin: 0 auto; padding: 2.5rem; line-height: 1.8; }
+  .content-card h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .article-meta { font-size: 0.85rem; color: var(--color-text-light); margin-bottom: 1.5rem; }
+  .warning-box { background: #fffbe6; border-left: 4px solid #f59e0b; padding: 1.25rem; border-radius: var(--radius-sm); margin-bottom: 2rem; font-size: 0.95rem; color: #78350f; }
+  .content-card h2 { font-size: 1.35rem; font-weight: 800; margin: 2rem 0 0.75rem; color: var(--color-text-main); }
+</style>

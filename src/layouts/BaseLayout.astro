@@ -1,0 +1,35 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { SEOProps } from '../utils/seo';
+import '../styles/global.css';
+
+interface Props extends SEOProps {
+  jsonLd?: object | object[];
+}
+
+const { title, description, canonical, noindex, ogType, ogImage, jsonLd } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <SEOHead
+      title={title}
+      description={description}
+      canonical={canonical}
+      noindex={noindex}
+      ogType={ogType}
+      ogImage={ogImage}
+      jsonLd={jsonLd}
+    />
+  </head>
+  <body>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

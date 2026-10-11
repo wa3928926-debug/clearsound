@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpeakerTest from '../../components/SpeakerTest.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdPlaceholder from '../../components/AdPlaceholder.astro';
+import { generateWebApplicationSchema, generateFAQSchema } from '../../utils/schema';
+
+const breadcrumbs = [
+  { name: 'Speaker Test', url: '/speaker-test/' }
+];
+
+const faqs = [
+  {
+    question: "How do I know if my left or right speaker is blown?",
+    answer: "Run the Left Speaker Test followed by the Right Speaker Test. If one channel emits harsh crackling, heavy mechanical distortion, or complete silence while the other plays clearly at the same volume level, the speaker hardware may be physically damaged."
+  },
+  {
+    question: "Why does my phone only play sound from one speaker during tests?",
+    answer: "Some budget smartphone models only feature a single bottom-firing mono speaker, using the top earpiece strictly for telephone calls rather than media playback."
+  }
+];
+
+const schema = [
+  generateWebApplicationSchema("Speaker Diagnostic Suite", "Comprehensive browser test suite for left, right, and stereo channels.", "/speaker-test/"),
+  generateFAQSchema(faqs)
+];
+---
+
+<BaseLayout
+  title="Speaker Diagnostic Test – Left, Right & Stereo Audio Check"
+  description="Test left, right, and stereo speaker channels online. Diagnose speaker balance, crackling, and frequency response for mobile phones and laptops."
+  jsonLd={schema}
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="page-header">
+      <h1>Speaker Diagnostic Test Suite</h1>
+      <p class="lead-text">
+        Isolate audio output across left, right, and stereo channels to evaluate sound clarity, balance, and hardware condition.
+      </p>
+    </header>
+
+    <main class="tool-main-wrap">
+      <SpeakerTest initialTest="all" />
+    </main>
+
+    <AdPlaceholder slotId="2003" minHeight="280px" />
+
+    <FAQ items={faqs} />
+    <RelatedTools currentToolId="speaker-test" />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .page-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .lead-text {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-main-wrap {
+    margin-bottom: 3rem;
+  }
+</style>

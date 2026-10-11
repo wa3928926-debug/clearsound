@@ -1,0 +1,195 @@
+---
+interface Props {
+  id?: string;
+  showChannels?: boolean;
+}
+
+const { id = "audio-controls", showChannels = true } = Astro.props;
+---
+
+<div id={id} class="controls-card card">
+  <div class="safety-warning-banner">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    <span><strong>Volume Guidance:</strong> Set volume to a comfortable level. Stop immediately if audio output sounds distorted or uncomfortable.</span>
+  </div>
+
+  <div class="main-btn-group">
+    <button id={`${id}-btn-start`} class="btn btn-primary btn-lg start-btn" aria-label="Start Audio Cleaning Sequence">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      <span>Start Sound</span>
+    </button>
+
+    <button id={`${id}-btn-pause`} class="btn btn-secondary btn-lg" style="display: none;" aria-label="Pause Sound">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="6" y="4" width="4" height="16"/>
+        <rect x="14" y="4" width="4" height="16"/>
+      </svg>
+      <span>Pause</span>
+    </button>
+
+    <button id={`${id}-btn-stop`} class="btn btn-danger btn-lg" style="display: none;" aria-label="Stop Sound">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="4" y="4" width="16" height="16" rx="2"/>
+      </svg>
+      <span>Stop</span>
+    </button>
+
+    <button id={`${id}-btn-restart`} class="btn btn-secondary" aria-label="Restart Sound Sequence">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M23 4v6h-6"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+      <span>Restart</span>
+    </button>
+  </div>
+
+  <div class="audio-sliders-row">
+    <div class="slider-group">
+      <div class="slider-header">
+        <label for={`${id}-volume-input`}>Output Volume</label>
+        <span id={`${id}-volume-label`}>80%</span>
+      </div>
+      <input type="range" id={`${id}-volume-input`} min="0" max="100" value="80" class="volume-slider" aria-label="Volume adjustment" />
+    </div>
+
+    {showChannels && (
+      <div class="channel-group">
+        <label class="channel-label">Speaker Channel</label>
+        <div class="channel-options">
+          <button type="button" class="channel-btn active" data-channel="stereo" id={`${id}-chan-stereo`}>Stereo</button>
+          <button type="button" class="channel-btn" data-channel="left" id={`${id}-chan-left`}>Left</button>
+          <button type="button" class="channel-btn" data-channel="right" id={`${id}-chan-right`}>Right</button>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .controls-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .safety-warning-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    color: #8c6b00;
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  [data-theme="dark"] .safety-warning-banner {
+    background: #2b2100;
+    border-color: #594700;
+    color: #ffe58f;
+  }
+
+  .safety-warning-banner svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .main-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .start-btn {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .audio-sliders-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-card-border);
+  }
+
+  .slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+  }
+
+  .volume-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--color-card-border);
+    accent-color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .channel-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .channel-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+  }
+
+  .channel-options {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--color-bg);
+    padding: 4px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-card-border);
+  }
+
+  .channel-btn {
+    flex: 1;
+    padding: 0.4rem 0.75rem;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .channel-btn.active {
+    background: var(--color-surface);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  @media (max-width: 640px) {
+    .audio-sliders-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

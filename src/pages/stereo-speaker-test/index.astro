@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpeakerTest from '../../components/SpeakerTest.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdPlaceholder from '../../components/AdPlaceholder.astro';
+
+const breadcrumbs = [
+  { name: 'Speaker Test', url: '/speaker-test/' },
+  { name: 'Stereo Test', url: '/stereo-speaker-test/' }
+];
+
+const faqs = [
+  {
+    question: "What is a stereo balance test?",
+    answer: "A stereo balance test sweeps audio smoothy between left, right, and dual channels to verify spatial acoustic separation and hardware balance."
+  }
+];
+---
+
+<BaseLayout
+  title="Stereo Speaker Test – Online Left/Right Balance Check"
+  description="Test stereo imaging, spatial balance, and dual channel separation on your phone, headphones, or desktop speakers."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="page-header">
+      <h1>Stereo Speaker Balance Test</h1>
+      <p class="lead-text">
+        Check stereo channel balance and spatial sound reproduction across left and right speaker units.
+      </p>
+    </header>
+
+    <main class="tool-main-wrap">
+      <SpeakerTest initialTest="stereo" />
+    </main>
+
+    <AdPlaceholder slotId="2006" minHeight="280px" />
+    <FAQ items={faqs} />
+    <RelatedTools currentToolId="stereo-speaker-test" />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .page-header { text-align: center; max-width: 760px; margin: 0 auto 2.5rem; }
+  .lead-text { font-size: 1.15rem; color: var(--color-text-muted); }
+  .tool-main-wrap { margin-bottom: 3rem; }
+</style>

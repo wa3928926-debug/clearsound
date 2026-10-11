@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const breadcrumbs = [{ name: 'Privacy Policy', url: '/privacy/' }];
+---
+
+<BaseLayout
+  title="Privacy Policy – ClearSound"
+  description="Read ClearSound's privacy policy regarding client-side audio execution, analytics placeholders, and cookies."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="card content-card">
+      <h1>Privacy Policy</h1>
+      <p class="article-meta">Last Updated: October 2026</p>
+
+      <h2>1. Client-Side Audio Execution</h2>
+      <p>
+        ClearSound processes all audio operations strictly client-side using your browser's Web Audio API. We do NOT request microphone access, record ambient sound, or transmit audio data to any server.
+      </p>
+
+      <h2>2. Analytics & Performance Metrics</h2>
+      <p>
+        We may use aggregate analytics services (such as Google Analytics 4) to evaluate page traffic and technical performance. These tools collect anonymized data such as browser type, general region, and page view metrics without personal identification.
+      </p>
+
+      <h2>3. Advertising & Third-Party Cookies</h2>
+      <p>
+        ClearSound integrates Google AdSense placeholders to serve advertisements. Third-party vendors may use cookies to serve ads based on user visits to this or other websites.
+      </p>
+
+      <h2>4. Data Security</h2>
+      <p>
+        Because we do not store personal account databases, user passwords, or audio recordings, your privacy remains protected during your browsing session.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .content-card { max-width: 800px; margin: 0 auto; padding: 2.5rem; line-height: 1.8; }
+  .content-card h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .article-meta { font-size: 0.85rem; color: var(--color-text-light); margin-bottom: 2rem; }
+  .content-card h2 { font-size: 1.35rem; font-weight: 800; margin: 2rem 0 0.75rem; color: var(--color-text-main); }
+</style>

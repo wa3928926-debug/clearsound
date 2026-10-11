@@ -1,0 +1,218 @@
+---
+import FrequencyVisualizer from './FrequencyVisualizer.astro';
+import AudioControl from './AudioControl.astro';
+
+interface Props {
+  title?: string;
+  sequenceName?: 'cleaner' | 'water';
+}
+
+const { title = "Speaker Cleaner Sound Engine", sequenceName = 'cleaner' } = Astro.props;
+---
+
+<div class="cleaner-tool-container" id="cleaner-app" data-sequence={sequenceName}>
+  <div class="cleaner-tool-header">
+    <h2 class="cleaner-tool-title">{title}</h2>
+    <p class="cleaner-tool-desc">
+      Tap <strong>Start Sound</strong> to initiate the acoustic frequency progression.
+    </p>
+  </div>
+
+  <!-- Visualizer Component -->
+  <FrequencyVisualizer id="main-vis" />
+
+  <!-- Audio Controls Component -->
+  <AudioControl id="main-ctrl" showChannels={true} />
+
+  <div id="audio-error-msg" class="audio-error-alert" style="display: none;">
+    <span id="audio-error-text">Your browser does not support the audio features required. Please try Chrome, Safari, Firefox, or Edge.</span>
+  </div>
+</div>
+
+<style>
+  .cleaner-tool-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .cleaner-tool-header {
+    text-align: center;
+  }
+
+  .cleaner-tool-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+
+  .cleaner-tool-desc {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .audio-error-alert {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+</style>
+
+<script>
+  import { SpeakerCleanerEngine, type ChannelMode } from '../utils/audio';
+  import { CLEANER_FREQUENCY_SEQUENCE, WATER_EJECT_SEQUENCE } from '../data/frequencies';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('cleaner-app');
+    if (!container) return;
+
+    const seqType = container.dataset.sequence || 'cleaner';
+    const sequence = seqType === 'water' ? WATER_EJECT_SEQUENCE : CLEANER_FREQUENCY_SEQUENCE;
+
+    // Elements
+    const visCard = document.getElementById('main-vis');
+    const statusText = document.getElementById('main-vis-status');
+    const freqValue = document.getElementById('main-vis-freq-value');
+    const timeElapsed = document.getElementById('main-vis-time-elapsed');
+    const timeTotal = document.getElementById('main-vis-time-total');
+    const stepLabel = document.getElementById('main-vis-step-label');
+    const progressFill = document.getElementById('main-vis-progress-fill');
+
+    const btnStart = document.getElementById('main-ctrl-btn-start');
+    const btnPause = document.getElementById('main-ctrl-btn-pause');
+    const btnStop = document.getElementById('main-ctrl-btn-stop');
+    const btnRestart = document.getElementById('main-ctrl-btn-restart');
+
+    const volumeInput = document.getElementById('main-ctrl-volume-input') as HTMLInputElement | null;
+    const volumeLabel = document.getElementById('main-ctrl-volume-label');
+    const chanBtns = document.querySelectorAll('#main-ctrl .channel-btn');
+
+    const errorAlert = document.getElementById('audio-error-msg');
+    const errorText = document.getElementById('audio-error-text');
+
+    let selectedChannel: ChannelMode = 'stereo';
+
+    // Format seconds to mm:ss
+    const formatTime = (sec: number) => {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    };
+
+    const engine = new SpeakerCleanerEngine(sequence, {
+      onStepChange: (_idx, step) => {
+        if (freqValue) freqValue.textContent = String(step.frequency);
+        if (stepLabel) stepLabel.textContent = step.label;
+      },
+      onProgress: (elapsed, total, percent) => {
+        if (timeElapsed) timeElapsed.textContent = formatTime(elapsed);
+        if (timeTotal) timeTotal.textContent = formatTime(total);
+        if (progressFill) progressFill.style.width = `${percent}%`;
+      },
+      onComplete: () => {
+        setUIState('idle');
+        if (statusText) statusText.textContent = 'Cleaning Complete!';
+        if (progressFill) progressFill.style.width = '100%';
+      },
+      onError: (err) => {
+        setUIState('idle');
+        if (errorAlert && errorText) {
+          errorText.textContent = err.message || 'Audio initialization error.';
+          errorAlert.style.display = 'block';
+        }
+      }
+    });
+
+    const setUIState = (state: 'idle' | 'playing' | 'paused') => {
+      if (!visCard) return;
+
+      visCard.classList.remove('playing', 'paused');
+
+      if (state === 'playing') {
+        visCard.classList.add('playing');
+        if (statusText) statusText.textContent = 'Playing Sound...';
+        if (btnStart) btnStart.style.display = 'none';
+        if (btnPause) btnPause.style.display = 'inline-flex';
+        if (btnStop) btnStop.style.display = 'inline-flex';
+      } else if (state === 'paused') {
+        visCard.classList.add('paused');
+        if (statusText) statusText.textContent = 'Paused';
+        if (btnStart) btnStart.style.display = 'inline-flex';
+        if (btnPause) btnPause.style.display = 'none';
+        if (btnStop) btnStop.style.display = 'inline-flex';
+      } else {
+        if (statusText) statusText.textContent = 'Ready';
+        if (btnStart) btnStart.style.display = 'inline-flex';
+        if (btnPause) btnPause.style.display = 'none';
+        if (btnStop) btnStop.style.display = 'none';
+      }
+    };
+
+    // Event Listeners
+    if (btnStart) {
+      btnStart.addEventListener('click', async () => {
+        if (engine.isPaused) {
+          await engine.resume();
+          setUIState('playing');
+        } else {
+          const vol = volumeInput ? parseFloat(volumeInput.value) / 100 : 0.8;
+          engine.setVolume(vol);
+          await engine.start(selectedChannel);
+          setUIState('playing');
+        }
+      });
+    }
+
+    if (btnPause) {
+      btnPause.addEventListener('click', () => {
+        engine.pause();
+        setUIState('paused');
+      });
+    }
+
+    if (btnStop) {
+      btnStop.addEventListener('click', () => {
+        engine.stop();
+        setUIState('idle');
+        if (progressFill) progressFill.style.width = '0%';
+        if (timeElapsed) timeElapsed.textContent = '00:00';
+      });
+    }
+
+    if (btnRestart) {
+      btnRestart.addEventListener('click', async () => {
+        engine.stop();
+        const vol = volumeInput ? parseFloat(volumeInput.value) / 100 : 0.8;
+        engine.setVolume(vol);
+        await engine.start(selectedChannel);
+        setUIState('playing');
+      });
+    }
+
+    if (volumeInput) {
+      volumeInput.addEventListener('input', () => {
+        const val = parseInt(volumeInput.value, 10);
+        if (volumeLabel) volumeLabel.textContent = `${val}%`;
+        engine.setVolume(val / 100);
+      });
+    }
+
+    chanBtns.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        chanBtns.forEach(b => b.classList.remove('active'));
+        const target = e.currentTarget as HTMLButtonElement;
+        target.classList.add('active');
+        selectedChannel = (target.dataset.channel as ChannelMode) || 'stereo';
+        if (engine.isRunning) {
+          engine.setPan(selectedChannel === 'left' ? -1 : selectedChannel === 'right' ? 1 : 0);
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpeakerCleaner from '../../components/SpeakerCleaner.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdPlaceholder from '../../components/AdPlaceholder.astro';
+import DeviceCard from '../../components/DeviceCard.astro';
+import { getDevicesByCategory, type DeviceInfo } from '../../data/devices';
+import { generateWebApplicationSchema, generateFAQSchema, generateBreadcrumbSchema } from '../../utils/schema';
+
+export async function getStaticPaths() {
+  const devices = getDevicesByCategory('samsung');
+  return devices.map((device) => ({
+    params: { model: device.slug },
+    props: { device }
+  }));
+}
+
+interface Props {
+  device: DeviceInfo;
+}
+
+const { device } = Astro.props;
+const categoryDevices = getDevicesByCategory('samsung').filter(d => d.slug !== device.slug);
+
+const breadcrumbs = [
+  { name: 'Samsung Guides', url: '/samsung/' },
+  { name: device.model, url: `/samsung/${device.slug}/` }
+];
+
+const faqs = [
+  {
+    question: `How to clear water from Samsung ${device.model} speaker?`,
+    answer: `Point the bottom speaker port of your ${device.model} toward a soft cloth, set volume to 80-90%, and play the ClearSound audio progression.`
+  }
+];
+
+const schemas = [
+  generateWebApplicationSchema(device.title, device.description, `/samsung/${device.slug}/`),
+  generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Samsung', url: '/samsung/' },
+    { name: device.model, url: `/samsung/${device.slug}/` }
+  ]),
+  generateFAQSchema(faqs)
+];
+---
+
+<BaseLayout title={device.title} description={device.description} noindex={!device.indexable} jsonLd={schemas}>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+    <header class="page-header">
+      <div class="meta-badge-row">
+        <span class="badge">{device.brand}</span>
+        <span class="updated-text">Updated October 2026</span>
+      </div>
+      <h1>{device.model} Speaker Cleaner</h1>
+      <p class="lead-text">{device.description}</p>
+    </header>
+
+    <main class="tool-main-wrap">
+      <SpeakerCleaner sequenceName="cleaner" title={`${device.model} Sound Cleaner`} />
+    </main>
+
+    <AdPlaceholder slotId="3002" minHeight="280px" />
+
+    <section class="device-specs-card card">
+      <h2>{device.model} Hardware & Acoustic Specs</h2>
+      <div class="specs-grid">
+        <div class="spec-item"><span class="spec-label">Speaker Layout</span><span class="spec-val">{device.speakerLayout}</span></div>
+        <div class="spec-item"><span class="spec-label">Water Resistance Rating</span><span class="spec-val">{device.waterRating}</span></div>
+        <div class="spec-item"><span class="spec-label">Release Year</span><span class="spec-val">{device.year}</span></div>
+      </div>
+    </section>
+
+    <section class="content-block card">
+      <h2>Cleaning Guidance for {device.model}</h2>
+      <ul class="tips-list">{device.cleaningTips.map(tip => <li>{tip}</li>)}</ul>
+    </section>
+
+    <FAQ items={faqs} />
+    {categoryDevices.length > 0 && (
+      <section class="related-devices-section">
+        <h2>Other Samsung Models</h2>
+        <div class="devices-grid">{categoryDevices.map(d => <DeviceCard device={d} />)}</div>
+      </section>
+    )}
+    <RelatedTools />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .page-header { text-align: center; max-width: 760px; margin: 0 auto 2.5rem; }
+  .meta-badge-row { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .updated-text { font-size: 0.85rem; color: var(--color-text-light); }
+  .lead-text { font-size: 1.15rem; color: var(--color-text-muted); }
+  .tool-main-wrap { margin-bottom: 3rem; }
+  .device-specs-card { margin: 3rem 0; }
+  .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.25rem; }
+  .spec-item { display: flex; flex-direction: column; gap: 0.25rem; }
+  .spec-label { font-size: 0.8rem; font-weight: 700; color: var(--color-text-light); text-transform: uppercase; }
+  .spec-val { font-size: 0.95rem; font-weight: 600; color: var(--color-text-main); }
+  .content-block { margin: 2rem 0; line-height: 1.7; }
+  .tips-list { padding-left: 1.25rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .related-devices-section { margin: 4rem 0; }
+  .related-devices-section h2 { margin-bottom: 2rem; text-align: center; }
+  .devices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+</style>

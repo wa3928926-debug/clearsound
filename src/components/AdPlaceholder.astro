@@ -1,0 +1,41 @@
+---
+interface Props {
+  slotId?: string;
+  format?: 'auto' | 'rectangle' | 'horizontal';
+  minHeight?: string;
+}
+
+const { slotId = "0000000000", format = "auto", minHeight = "280px" } = Astro.props;
+const adsenseId = import.meta.env.PUBLIC_ADSENSE_ID;
+---
+
+<div class="ad-container" style={`min-height: ${minHeight};`}>
+  <div class="ad-label">Advertisement</div>
+  {adsenseId ? (
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client={adsenseId}
+         data-ad-slot={slotId}
+         data-ad-format={format}
+         data-full-width-responsive="true"></ins>
+  ) : (
+    <div class="ad-placeholder-box">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="M7 15h10M7 9h4" />
+      </svg>
+      <span>Reserved Ad Space</span>
+    </div>
+  )}
+</div>
+
+<style>
+  .ad-placeholder-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-light);
+    font-size: 0.85rem;
+  }
+</style>

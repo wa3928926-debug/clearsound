@@ -1,0 +1,179 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id = "visualizer" } = Astro.props;
+---
+
+<div id={id} class="visualizer-card card">
+  <div class="visualizer-header">
+    <div class="status-indicator">
+      <span class="status-dot" id={`${id}-dot`}></span>
+      <span class="status-text" id={`${id}-status`}>Ready to Clean</span>
+    </div>
+    <div class="frequency-badge" id={`${id}-freq-badge`}>
+      <span id={`${id}-freq-value`}>165</span> Hz
+    </div>
+  </div>
+
+  <div class="wave-display" id={`${id}-wave-display`}>
+    <div class="wave-bar bar-1"></div>
+    <div class="wave-bar bar-2"></div>
+    <div class="wave-bar bar-3"></div>
+    <div class="wave-bar bar-4"></div>
+    <div class="wave-bar bar-5"></div>
+    <div class="wave-bar bar-6"></div>
+    <div class="wave-bar bar-7"></div>
+    <div class="wave-bar bar-8"></div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id={`${id}-progress-fill`} style="width: 0%;"></div>
+    </div>
+    <div class="time-metrics">
+      <span id={`${id}-time-elapsed`}>00:00</span>
+      <span id={`${id}-step-label`}>Step 1: Deep Resonance</span>
+      <span id={`${id}-time-total`}>01:00</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .visualizer-card {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.04), rgba(79, 70, 229, 0.04));
+    border: 2px solid var(--color-primary-light);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .visualizer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-text-main);
+  }
+
+  .status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-text-light);
+    transition: background-color var(--transition-fast);
+  }
+
+  .visualizer-card.playing .status-dot {
+    background-color: var(--color-success);
+    box-shadow: 0 0 10px var(--color-success);
+    animation: blinkDot 1.5s infinite;
+  }
+
+  .visualizer-card.paused .status-dot {
+    background-color: var(--color-warning);
+  }
+
+  @keyframes blinkDot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .frequency-badge {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: #ffffff;
+    padding: 0.4rem 1.1rem;
+    border-radius: var(--radius-full);
+    font-weight: 800;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+  }
+
+  .wave-display {
+    height: 80px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 1.5rem;
+  }
+
+  .wave-bar {
+    flex: 1;
+    max-width: 16px;
+    height: 16%;
+    background: var(--color-primary-light);
+    border-radius: var(--radius-full);
+    transition: height 200ms ease, background-color 200ms ease;
+  }
+
+  .visualizer-card.playing .wave-bar {
+    background: linear-gradient(to top, var(--color-primary), var(--color-accent));
+    animation: waveBounce 1.2s infinite ease-in-out alternate;
+  }
+
+  .wave-bar.bar-1 { animation-delay: 0.1s; }
+  .wave-bar.bar-2 { animation-delay: 0.3s; }
+  .wave-bar.bar-3 { animation-delay: 0.5s; }
+  .wave-bar.bar-4 { animation-delay: 0.2s; }
+  .wave-bar.bar-5 { animation-delay: 0.4s; }
+  .wave-bar.bar-6 { animation-delay: 0.6s; }
+  .wave-bar.bar-7 { animation-delay: 0.25s; }
+  .wave-bar.bar-8 { animation-delay: 0.45s; }
+
+  @keyframes waveBounce {
+    0% { height: 15%; }
+    100% { height: 85%; }
+  }
+
+  .progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .progress-bar-bg {
+    height: 10px;
+    background: var(--color-card-border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    border-radius: var(--radius-full);
+    transition: width 150ms linear;
+  }
+
+  .time-metrics {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .visualizer-card.playing .status-dot {
+      animation: none;
+    }
+    .visualizer-card.playing .wave-bar {
+      animation: none;
+      height: 50%;
+    }
+  }
+</style>

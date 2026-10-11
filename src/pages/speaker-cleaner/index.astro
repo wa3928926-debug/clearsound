@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpeakerCleaner from '../../components/SpeakerCleaner.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdPlaceholder from '../../components/AdPlaceholder.astro';
+import { generateWebApplicationSchema, generateFAQSchema } from '../../utils/schema';
+
+const breadcrumbs = [
+  { name: 'Speaker Cleaner', url: '/speaker-cleaner/' }
+];
+
+const faqs = [
+  {
+    question: "What frequency sequence does the Speaker Cleaner use?",
+    answer: "The cleaner runs a 60-second stepped acoustic progression from 165 Hz up to 240 Hz. This specific low-frequency spectrum maximizes physical air movement without exceeding safe speaker membrane excursion limits."
+  },
+  {
+    question: "Do I need to download an app to clean my speaker?",
+    answer: "No. ClearSound runs directly in any modern web browser on iOS, Android, macOS, or Windows using the HTML5 Web Audio API. No installation or registration is required."
+  }
+];
+
+const schema = [
+  generateWebApplicationSchema("Speaker Cleaner Engine", "Acoustic frequency sound generator for dislodging water and dust.", "/speaker-cleaner/"),
+  generateFAQSchema(faqs)
+];
+---
+
+<BaseLayout
+  title="Speaker Cleaner – Remove Water & Dust Sound Tool"
+  description="Run a 60-second 165Hz–240Hz Web Audio cleaning sequence to loosen trapped water and dust from smartphone and laptop speakers."
+  jsonLd={schema}
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="page-header">
+      <h1>Speaker Cleaner Sound Generator</h1>
+      <p class="lead-text">
+        Generate controlled low-frequency acoustic vibrations to dislodge moisture droplets and fine dust particles from your speaker grille.
+      </p>
+    </header>
+
+    <main class="tool-main-wrap">
+      <SpeakerCleaner sequenceName="cleaner" title="Speaker Cleaning Cycle" />
+    </main>
+
+    <AdPlaceholder slotId="2001" minHeight="280px" />
+
+    <section class="content-block card">
+      <h2>Why Low-Frequency Sound Cleans Speakers</h2>
+      <p>
+        Mobile phone speakers use a micro-diaphragm that moves back and forth to compress air and produce sound waves. When water drops or fine pocket lint block the outer speaker mesh, sound becomes quiet or distorted.
+      </p>
+      <p>
+        By playing low-frequency pure sine tones (165 Hz to 240 Hz) at sufficient amplitude, the diaphragm undergoes large mechanical displacements. This rapid air displacement pushes trapped surface water outward through the speaker port openings.
+      </p>
+    </section>
+
+    <FAQ items={faqs} />
+    <RelatedTools currentToolId="speaker-cleaner" />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .page-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .page-header h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .lead-text {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-main-wrap {
+    margin-bottom: 3rem;
+  }
+
+  .content-block {
+    margin: 3rem 0;
+    line-height: 1.7;
+  }
+
+  .content-block h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const breadcrumbs = [{ name: 'About Us', url: '/about/' }];
+---
+
+<BaseLayout
+  title="About ClearSound – Browser Audio Utilities"
+  description="Learn about ClearSound's client-side Web Audio engine built for safe speaker cleaning and audio testing."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="card content-card">
+      <h1>About ClearSound</h1>
+      <p class="lead-text">
+        ClearSound is an independent, client-side web application dedicated to providing clean, responsive, and privacy-respecting audio tools.
+      </p>
+
+      <h2>Our Core Mission</h2>
+      <p>
+        We believe useful utility tools should be accessible directly in your web browser without requiring heavy app downloads, forced user accounts, or server-side data uploads.
+      </p>
+
+      <h2>Client-Side Engineering</h2>
+      <p>
+        ClearSound utilizes the browser's native HTML5 Web Audio API (`AudioContext`, `OscillatorNode`, and `GainNode`) to synthesize low-frequency sound waves dynamically on your device hardware. Your microphone data and private audio are never captured or sent to external servers.
+      </p>
+
+      <h2>Originality & Transparency</h2>
+      <p>
+        ClearSound is an original software implementation built from first principles. We operate transparently and aim to provide accurate, reliable hardware maintenance guidance.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .content-card { max-width: 800px; margin: 0 auto; padding: 2.5rem; line-height: 1.8; }
+  .content-card h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.75rem; }
+  .lead-text { font-size: 1.15rem; color: var(--color-text-muted); margin-bottom: 2rem; }
+  .content-card h2 { font-size: 1.35rem; font-weight: 800; margin: 2rem 0 0.75rem; color: var(--color-text-main); }
+</style>

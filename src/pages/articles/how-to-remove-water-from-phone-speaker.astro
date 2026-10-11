@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import SpeakerCleaner from '../../components/SpeakerCleaner.astro';
+
+const breadcrumbs = [
+  { name: 'Articles', url: '/articles/' },
+  { name: 'Remove Water From Phone Speaker', url: '/articles/how-to-remove-water-from-phone-speaker/' }
+];
+---
+
+<BaseLayout
+  title="How to Remove Water From a Phone Speaker (Safe Guide)"
+  description="Learn how low-frequency acoustic sound waves and proper drying steps dislodge water droplets from mobile phone speakers."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <article class="article-body card">
+      <header class="article-header">
+        <h1>How to Remove Water From a Phone Speaker</h1>
+        <p class="article-meta">Published October 2026 &bull; Technical Audio Guide</p>
+      </header>
+
+      <p class="intro-p">
+        Accidentally dropping your smartphone in a sink, pool, or rain puddle often leaves trapped water inside the speaker grilles. Surface tension prevents water droplets from draining naturally through micro openings, causing sound to become muffled or distorted.
+      </p>
+
+      <h2>Step 1: Immediate Safety Precautions</h2>
+      <p>Before testing or playing audio, take these initial steps:</p>
+      <ul>
+        <li>Power off your device if it was submerged completely in water.</li>
+        <li>Remove all external protective cases, covers, and accessories.</li>
+        <li>Wipe the exterior chassis thoroughly with a dry, lint-free microfiber towel.</li>
+      </ul>
+
+      <h2>Step 2: Run Low-Frequency Sound Ejection</h2>
+      <p>
+        The most effective non-invasive technique relies on low-frequency sound waves (155 Hz – 240 Hz). Sound waves force the speaker cone to vibrate at maximum excursion, displacing the air column behind the mesh and ejecting water drops outwards.
+      </p>
+
+      <div class="embedded-tool-box">
+        <SpeakerCleaner title="Run Water Eject Sound Now" sequenceName="water" />
+      </div>
+
+      <h2>Step 3: What NOT to Do</h2>
+      <p>Avoid these common mistakes that can permanently damage speaker membranes:</p>
+      <ul>
+        <li><strong>Do NOT insert cotton swabs, pins, or paper towels:</strong> Inserting sharp objects can puncture fragile waterproof membranes.</li>
+        <li><strong>Do NOT use hot hair dryers:</strong> Intense thermal heat can warp delicate plastic internal components and weaken waterproof adhesive seals.</li>
+        <li><strong>Do NOT put your phone in uncooked rice:</strong> Starch particles and rice dust enter speaker meshes and form hardened slurry paste when mixed with liquid.</li>
+      </ul>
+
+      <p>
+        After running 2–3 audio cycles, leave your phone in a dry, ventilated area for 1 hour, then verify sound balance with our <a href="/speaker-test/">Speaker Diagnostic Test</a>.
+      </p>
+    </article>
+
+    <RelatedTools />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .article-body { max-width: 800px; margin: 0 auto 3rem; padding: 2.5rem; line-height: 1.8; }
+  .article-header { margin-bottom: 2rem; border-bottom: 1px solid var(--color-card-border); padding-bottom: 1.5rem; }
+  .article-header h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .article-meta { font-size: 0.85rem; color: var(--color-text-light); }
+  .intro-p { font-size: 1.1rem; color: var(--color-text-main); font-weight: 500; }
+  .article-body h2 { font-size: 1.4rem; font-weight: 800; margin: 2rem 0 1rem; color: var(--color-text-main); }
+  .article-body ul { padding-left: 1.5rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .embedded-tool-box { margin: 2.5rem 0; background: var(--color-bg); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-card-border); }
+</style>

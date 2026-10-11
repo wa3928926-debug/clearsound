@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdPlaceholder from '../../components/AdPlaceholder.astro';
+
+const breadcrumbs = [
+  { name: 'Frequency Test', url: '/frequency-test/' }
+];
+
+const faqs = [
+  {
+    question: "What frequency range can human ears hear?",
+    answer: "The average human hearing range spans from approximately 20 Hz (very low bass) to 20,000 Hz (20 kHz high pitch tone). Speaker hardware limits often narrow this range, particularly on micro smartphone speakers."
+  }
+];
+---
+
+<BaseLayout
+  title="Audio Frequency Response Test – Interactive Tone Generator"
+  description="Test speaker frequency response from 20 Hz to 20,000 Hz. Free online browser audio frequency generator."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="page-header">
+      <h1>Audio Frequency Response Test</h1>
+      <p class="lead-text">
+        Generate custom frequency sine tones from 20 Hz up to 20,000 Hz to test acoustic limits and sound reproduction.
+      </p>
+    </header>
+
+    <main class="tool-main-wrap">
+      <div class="card freq-test-card" id="freq-test-app">
+        <div class="freq-display-box">
+          <span class="freq-number" id="freq-num-display">440</span>
+          <span class="freq-unit">Hz</span>
+        </div>
+
+        <div class="preset-buttons">
+          <button class="btn btn-secondary preset-btn" data-freq="100">100 Hz (Bass)</button>
+          <button class="btn btn-secondary preset-btn" data-freq="440">440 Hz (Concert A)</button>
+          <button class="btn btn-secondary preset-btn" data-freq="1000">1 kHz (Standard)</button>
+          <button class="btn btn-secondary preset-btn" data-freq="5000">5 kHz (High Pitch)</button>
+          <button class="btn btn-secondary preset-btn" data-freq="10000">10 kHz (Treble)</button>
+        </div>
+
+        <div class="freq-slider-wrap">
+          <label for="freq-slider">Adjust Frequency: <strong id="freq-slider-label">440 Hz</strong></label>
+          <input type="range" id="freq-slider" min="20" max="15000" value="440" step="10" class="volume-slider" />
+        </div>
+
+        <div class="controls-row">
+          <button class="btn btn-primary btn-lg" id="btn-freq-start">Play Tone</button>
+          <button class="btn btn-danger btn-lg" id="btn-freq-stop" style="display: none;">Stop Tone</button>
+        </div>
+      </div>
+    </main>
+
+    <AdPlaceholder slotId="2007" minHeight="280px" />
+    <FAQ items={faqs} />
+    <RelatedTools currentToolId="frequency-test" />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .page-header { text-align: center; max-width: 760px; margin: 0 auto 2.5rem; }
+  .lead-text { font-size: 1.15rem; color: var(--color-text-muted); }
+  .tool-main-wrap { margin-bottom: 3rem; }
+
+  .freq-test-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2.5rem;
+  }
+
+  .freq-display-box {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .freq-number {
+    font-size: 3.5rem;
+    font-weight: 800;
+  }
+
+  .freq-unit {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .preset-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .freq-slider-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .controls-row {
+    display: flex;
+    justify-content: center;
+  }
+</style>
+
+<script>
+  import { SpeakerCleanerEngine } from '../../utils/audio';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const numDisplay = document.getElementById('freq-num-display');
+    const sliderLabel = document.getElementById('freq-slider-label');
+    const slider = document.getElementById('freq-slider') as HTMLInputElement | null;
+    const btnStart = document.getElementById('btn-freq-start');
+    const btnStop = document.getElementById('btn-freq-stop');
+    const presets = document.querySelectorAll('.preset-btn');
+
+    let engine: SpeakerCleanerEngine | null = null;
+    let currentFreq = 440;
+
+    const updateFreq = (freq: number) => {
+      currentFreq = freq;
+      if (numDisplay) numDisplay.textContent = String(freq);
+      if (sliderLabel) sliderLabel.textContent = `${freq} Hz`;
+      if (slider) slider.value = String(freq);
+      if (engine && engine.isRunning) {
+        engine.setFrequency(freq);
+      }
+    };
+
+    if (slider) {
+      slider.addEventListener('input', () => {
+        updateFreq(parseInt(slider.value, 10));
+      });
+    }
+
+    presets.forEach(p => {
+      p.addEventListener('click', (e) => {
+        const f = parseInt((e.currentTarget as HTMLButtonElement).dataset.freq || '440', 10);
+        updateFreq(f);
+      });
+    });
+
+    if (btnStart) {
+      btnStart.addEventListener('click', async () => {
+        if (!engine) {
+          engine = new SpeakerCleanerEngine([{ duration: 300, frequency: currentFreq, label: 'Frequency Generator' }]);
+        }
+        await engine.start('stereo');
+        engine.setFrequency(currentFreq);
+        if (btnStart) btnStart.style.display = 'none';
+        if (btnStop) btnStop.style.display = 'inline-flex';
+      });
+    }
+
+    if (btnStop) {
+      btnStop.addEventListener('click', () => {
+        if (engine) {
+          engine.stop();
+        }
+        if (btnStart) btnStart.style.display = 'inline-flex';
+        if (btnStop) btnStop.style.display = 'none';
+      });
+    }
+  });
+</script>

@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const breadcrumbs = [{ name: 'Terms of Service', url: '/terms/' }];
+---
+
+<BaseLayout
+  title="Terms of Service – ClearSound"
+  description="Read the terms of service governing the use of ClearSound web audio utilities."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <section class="card content-card">
+      <h1>Terms of Service</h1>
+      <p class="article-meta">Last Updated: October 2026</p>
+
+      <h2>1. Acceptance of Terms</h2>
+      <p>
+        By accessing and using ClearSound web applications, you agree to comply with these Terms of Service. If you do not agree, please discontinue use of the website immediately.
+      </p>
+
+      <h2>2. Permitted Use</h2>
+      <p>
+        ClearSound provides free, non-exclusive access to browser-based audio tools for personal, non-commercial device testing and acoustic cleaning. You may not scrape, frame, or mirror software code without authorization.
+      </p>
+
+      <h2>3. Intellectual Property</h2>
+      <p>
+        All original code, design assets, branding, and text content on ClearSound are the property of ClearSound. All third-party brand references (Apple, Samsung, Google, Xiaomi, Dell) belong to their respective trademark holders and are used solely for descriptive compatibility identification.
+      </p>
+
+      <h2>4. Limitation of Liability</h2>
+      <p>
+        ClearSound tools are provided "as is" without warranties of any kind. In no event shall ClearSound be liable for any direct or indirect hardware damages resulting from improper device volume levels.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .content-card { max-width: 800px; margin: 0 auto; padding: 2.5rem; line-height: 1.8; }
+  .content-card h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .article-meta { font-size: 0.85rem; color: var(--color-text-light); margin-bottom: 2rem; }
+  .content-card h2 { font-size: 1.35rem; font-weight: 800; margin: 2rem 0 0.75rem; color: var(--color-text-main); }
+</style>

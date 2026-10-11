@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const breadcrumbs = [
+  { name: 'Articles', url: '/articles/' },
+  { name: 'Fix Muffled Speaker', url: '/articles/how-to-fix-muffled-phone-speaker/' }
+];
+---
+
+<BaseLayout
+  title="How to Fix a Muffled Phone Speaker – Troubleshooting Steps"
+  description="Fix quiet, crackling, or muffled smartphone speaker audio caused by pocket lint, water droplets, or software volume limits."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <article class="article-body card">
+      <header class="article-header">
+        <h1>How to Fix a Muffled Phone Speaker</h1>
+        <p class="article-meta">Published October 2026 &bull; Audio Troubleshooting</p>
+      </header>
+
+      <p class="intro-p">
+        Muffled speaker audio is one of the most frustrating phone issues. Music, phone calls, and video playback suddenly sound distant, crackly, or completely muted.
+      </p>
+
+      <h2>Common Causes of Muffled Audio</h2>
+      <ol class="causes-list">
+        <li><strong>Trapped Moisture:</strong> Microscopic water droplets cling to speaker grilles after contact with moisture.</li>
+        <li><strong>Compacted Pocket Lint:</strong> Fabric fibers gradually settle into tiny speaker holes over months of daily pocket storage.</li>
+        <li><strong>Software EQ & Safety Limits:</strong> iOS Headphone Safety or Android Adapt Sound features may reduce output unexpectedly.</li>
+      </ol>
+
+      <h2>Step-by-Step Fixes</h2>
+      <h3>1. Run an Acoustic Sound Cleaner</h3>
+      <p>
+        Before attempting physical cleaning, use our browser-based <a href="/speaker-cleaner/">Speaker Cleaner</a>. The 165 Hz – 240 Hz frequency cycle produces rapid air pressure waves that vibrate loose trapped debris without opening your phone.
+      </p>
+
+      <h3>2. Gently Brush Outer Grilles</h3>
+      <p>
+        Use a clean, dry, ultra-soft bristled toothbrush angled at 45 degrees to gently brush away surface dust from bottom speaker cutouts. Never press debris deeper into the holes.
+      </p>
+
+      <h3>3. Test Channel Isolation</h3>
+      <p>
+        Check whether the issue affects both speakers or just one by running our <a href="/speaker-test/">Speaker Diagnostic Test</a>.
+      </p>
+    </article>
+
+    <RelatedTools />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .article-body { max-width: 800px; margin: 0 auto 3rem; padding: 2.5rem; line-height: 1.8; }
+  .article-header { margin-bottom: 2rem; border-bottom: 1px solid var(--color-card-border); padding-bottom: 1.5rem; }
+  .article-header h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .article-meta { font-size: 0.85rem; color: var(--color-text-light); }
+  .intro-p { font-size: 1.1rem; color: var(--color-text-main); font-weight: 500; }
+  .article-body h2 { font-size: 1.4rem; font-weight: 800; margin: 2rem 0 1rem; }
+  .article-body h3 { font-size: 1.15rem; font-weight: 700; margin: 1.5rem 0 0.5rem; }
+  .causes-list { padding-left: 1.5rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+</style>

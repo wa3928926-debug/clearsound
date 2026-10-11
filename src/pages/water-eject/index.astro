@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpeakerCleaner from '../../components/SpeakerCleaner.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import FAQ from '../../components/FAQ.astro';
+import AdPlaceholder from '../../components/AdPlaceholder.astro';
+import { generateWebApplicationSchema, generateFAQSchema } from '../../utils/schema';
+
+const breadcrumbs = [
+  { name: 'Water Eject', url: '/water-eject/' }
+];
+
+const faqs = [
+  {
+    question: "What is Water Eject audio?",
+    answer: "Water Eject audio uses specialized low-frequency sound pulses (155 Hz to 210 Hz) engineered to create air pressure bursts that force liquid out of smartphone speaker cavities after accidental water submersion."
+  },
+  {
+    question: "How many times should I run Water Eject?",
+    answer: "Run the sequence 2 to 3 times while tilting your device face-down at a 45-degree angle. Gently tap the corner of the device against a dry cloth between cycles."
+  }
+];
+
+const schema = [
+  generateWebApplicationSchema("Water Eject Audio Emitter", "Pulsed low-frequency audio tone generator for expelling water.", "/water-eject/"),
+  generateFAQSchema(faqs)
+];
+---
+
+<BaseLayout
+  title="Water Eject Audio – Get Water Out of Phone Speaker"
+  description="Play pulsed low-frequency Water Eject audio tones (155Hz–210Hz) inside your browser to dislodge liquid droplets from mobile phone speakers."
+  jsonLd={schema}
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="page-header">
+      <h1>Water Eject Audio Emitter</h1>
+      <p class="lead-text">
+        High-amplitude low-frequency pulsed sound sequence designed specifically for expelling liquid drops trapped in phone speaker chambers.
+      </p>
+    </header>
+
+    <main class="tool-main-wrap">
+      <SpeakerCleaner sequenceName="water" title="Water Eject Cycle" />
+    </main>
+
+    <AdPlaceholder slotId="2002" minHeight="280px" />
+
+    <section class="content-block card">
+      <h2>Emergency Steps After Dropping Your Phone in Water</h2>
+      <ol class="emergency-steps-list">
+        <li><strong>Turn Off Device Immediately:</strong> If your phone was fully submerged, turn off the power to prevent short circuits.</li>
+        <li><strong>Dry the Exterior:</strong> Gently wipe down the outer frame, glass screen, and port cutouts with a dry microfiber cloth.</li>
+        <li><strong>Remove Case & SIM Tray:</strong> Take off protective covers, MagSafe wallets, or SIM trays that trap moisture against port cutouts.</li>
+        <li><strong>Run Water Eject Audio:</strong> Launch this web tool at 80%–90% volume while keeping speaker grilles pointing down.</li>
+        <li><strong>Allow Natural Air Drying:</strong> Place the device in a well-ventilated, dry room for 1–2 hours. Do not submerge in raw rice.</li>
+      </ol>
+    </section>
+
+    <FAQ items={faqs} />
+    <RelatedTools currentToolId="water-eject" />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .page-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .page-header h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .lead-text {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-main-wrap {
+    margin-bottom: 3rem;
+  }
+
+  .content-block {
+    margin: 3rem 0;
+    line-height: 1.7;
+  }
+
+  .emergency-steps-list {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+</style>

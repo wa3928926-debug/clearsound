@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const breadcrumbs = [{ name: 'Articles', url: '/articles/' }];
+
+const articles = [
+  {
+    title: 'How to Remove Water From a Phone Speaker',
+    slug: 'how-to-remove-water-from-phone-speaker',
+    excerpt: 'Step-by-step guide to removing trapped water droplets from smartphone speaker cutouts using low-frequency sound waves and safe physical drying techniques.',
+    date: 'October 2026'
+  },
+  {
+    title: 'How to Fix a Muffled Phone Speaker',
+    slug: 'how-to-fix-muffled-phone-speaker',
+    excerpt: 'Diagnose and fix quiet or distorted speaker audio caused by pocket lint, dust buildup, or leftover liquid inside micro speaker meshes.',
+    date: 'October 2026'
+  },
+  {
+    title: 'Why Does My Phone Speaker Sound Quiet?',
+    slug: 'why-phone-speaker-sounds-quiet',
+    excerpt: 'Explore common software settings, dirt blockages, and hardware causes behind low speaker volume on iOS and Android devices.',
+    date: 'October 2026'
+  }
+];
+---
+
+<BaseLayout
+  title="Speaker Maintenance & Audio Troubleshooting Articles"
+  description="Guides and practical tips on fixing muffled phone speakers, removing water droplets, and testing audio channel balance."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="page-header">
+      <h1>Speaker Maintenance & Troubleshooting Guides</h1>
+      <p class="lead-text">
+        Practical guides written from first principles to help resolve phone speaker volume and clarity issues.
+      </p>
+    </header>
+
+    <div class="articles-grid">
+      {articles.map((art) => (
+        <a href={`/articles/${art.slug}/`} class="article-card card">
+          <span class="article-date">{art.date}</span>
+          <h2 class="article-title">{art.title}</h2>
+          <p class="article-excerpt">{art.excerpt}</p>
+          <div class="read-more-link">
+            <span>Read Article</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <RelatedTools />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .page-header { text-align: center; max-width: 760px; margin: 0 auto 3rem; }
+  .lead-text { font-size: 1.15rem; color: var(--color-text-muted); }
+  .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.75rem; margin-bottom: 4rem; }
+  .article-card { display: flex; flex-direction: column; gap: 0.75rem; text-decoration: none; color: inherit; }
+  .article-date { font-size: 0.8rem; font-weight: 700; color: var(--color-primary); }
+  .article-title { font-size: 1.35rem; font-weight: 800; color: var(--color-text-main); }
+  .article-excerpt { font-size: 0.9rem; color: var(--color-text-muted); flex-grow: 1; }
+  .read-more-link { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--color-primary); }
+</style>

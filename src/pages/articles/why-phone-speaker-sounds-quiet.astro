@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const breadcrumbs = [
+  { name: 'Articles', url: '/articles/' },
+  { name: 'Why Speaker Sounds Quiet', url: '/articles/why-phone-speaker-sounds-quiet/' }
+];
+---
+
+<BaseLayout
+  title="Why Does My Phone Speaker Sound Quiet? (Causes & Solutions)"
+  description="Troubleshoot low volume on iPhone and Android phone speakers. Fix quiet audio caused by dirt, software limits, or moisture."
+>
+  <div class="container page-padding">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <article class="article-body card">
+      <header class="article-header">
+        <h1>Why Does My Phone Speaker Sound Quiet?</h1>
+        <p class="article-meta">Published October 2026 &bull; Audio Performance</p>
+      </header>
+
+      <p class="intro-p">
+        If media playback volume is noticeably quiet even with your volume slider turned to 100%, several underlying hardware and software factors may be responsible.
+      </p>
+
+      <h2>1. Blocked Acoustic Ports</h2>
+      <p>
+        Dust, skin oils, and lint form a dense film over tiny speaker grilles. Even a thin layer reduces sound output by up to 50%. Running our <a href="/speaker-cleaner/">Speaker Cleaner</a> helps loosen particle blockages.
+      </p>
+
+      <h2>2. Bluetooth Audio Routing</h2>
+      <p>
+        Check if your device remains silently connected to wireless earbuds or a smart speaker nearby. Disconnect Bluetooth to restore audio to built-in phone speakers.
+      </p>
+
+      <h2>3. System Safety Volume Limits</h2>
+      <p>
+        Modern operating systems include hearing protection features. Check iOS <em>Settings &gt; Sound &amp; Haptics &gt; Headphone Safety</em> or Android <em>Sound &amp; Vibration</em> menu to verify maximum volume limits.
+      </p>
+    </article>
+
+    <RelatedTools />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-padding { padding-top: 2rem; padding-bottom: 4rem; }
+  .article-body { max-width: 800px; margin: 0 auto 3rem; padding: 2.5rem; line-height: 1.8; }
+  .article-header { margin-bottom: 2rem; border-bottom: 1px solid var(--color-card-border); padding-bottom: 1.5rem; }
+  .article-header h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .article-meta { font-size: 0.85rem; color: var(--color-text-light); }
+  .intro-p { font-size: 1.1rem; color: var(--color-text-main); font-weight: 500; }
+  .article-body h2 { font-size: 1.3rem; font-weight: 800; margin: 2rem 0 0.75rem; }
+</style>

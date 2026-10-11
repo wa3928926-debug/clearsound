@@ -1,0 +1,275 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SpeakerCleaner from '../components/SpeakerCleaner.astro';
+import DeviceCard from '../components/DeviceCard.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import AdPlaceholder from '../components/AdPlaceholder.astro';
+import { DEVICES } from '../data/devices';
+import { generateWebApplicationSchema, generateFAQSchema, generateHowToSchema } from '../utils/schema';
+
+const featuredDevices = DEVICES.filter(d => d.indexable).slice(0, 6);
+
+const faqs = [
+  {
+    question: "How does ClearSound clean device speakers with sound?",
+    answer: "ClearSound utilizes the browser's Web Audio API to generate precise low-frequency sound waves (ranging from 165 Hz to 240 Hz). These audio waves cause the speaker diaphragm to vibrate rapidly, creating physical air pressure that helps dislodge trapped water droplets and loose dust particles from the acoustic mesh."
+  },
+  {
+    question: "Is this speaker cleaner safe for my smartphone?",
+    answer: "Yes, when used at normal media playback volume levels, playing low-frequency audio tones is completely safe for device speaker hardware. The tool operates client-side inside your standard web browser. We advise starting at a moderate volume (70-80%) and stopping immediately if the audio sounds distorted."
+  },
+  {
+    question: "Does ClearSound upload my audio or microphone data?",
+    answer: "No. ClearSound works 100% client-side inside your browser. No microphone audio or user data is ever recorded, captured, or transmitted to any server."
+  },
+  {
+    question: "How long should I let the speaker cleaner run?",
+    answer: "A standard cleaning cycle takes 60 seconds. For devices with significant liquid exposure, you may repeat the 60-second sound progression 2 to 3 times while keeping the speaker ports pointing downward."
+  },
+  {
+    question: "What should I do if my speaker still sounds muffled?",
+    answer: "If audio remains muffled after 3 cycles, allow the phone to rest vertically in a warm, dry area for 30–60 minutes. Moisture inside deep acoustic cavities takes time to evaporate. Avoid using compressed air or hairdryer heat."
+  }
+];
+
+const howToSteps = [
+  { name: "Adjust Media Volume", text: "Carefully set your device media volume to 80%–90%. Avoid placing speaker directly against your ear." },
+  { name: "Position Speaker Downward", text: "Tilt or hold your smartphone so the bottom speaker grille points downward towards an absorbent cloth." },
+  { name: "Start Acoustic Sequence", text: "Tap the 'Start Sound' button above to launch the 60-second 165Hz–240Hz frequency cycle." },
+  { name: "Allow Cycle Completion", text: "Let the sound sequence run to completion while gently wiping any ejected moisture droplets." },
+  { name: "Verify with Speaker Test", text: "Run our Speaker Test suite to verify left, right, and stereo channel audio clarity." }
+];
+
+const schemas = [
+  generateWebApplicationSchema("ClearSound Speaker Cleaner", "Browser-based speaker cleaning sound tool.", "/"),
+  generateHowToSchema("How to Clean a Phone Speaker With Sound", "Step-by-step guide to removing water and dust using sound waves.", howToSteps),
+  generateFAQSchema(faqs)
+];
+---
+
+<BaseLayout
+  title="Clean Your Speaker With Sound – Free Browser Audio Utility"
+  description="Browser-based audio cleaner designed to help loosen moisture and debris from compatible iPhone, Samsung, Pixel, and laptop speakers using Web Audio frequencies."
+  jsonLd={schemas}
+>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-inner">
+      <div class="hero-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>100% Private Client-Side Web Audio Engine</span>
+      </div>
+
+      <h1 class="hero-headline">
+        Clean Your Speaker <span class="gradient-text">With Sound</span>
+      </h1>
+      
+      <p class="hero-subheadline">
+        A simple browser-based audio tool designed to help loosen moisture and debris from compatible device speakers using controlled frequency vibrations.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#cleaner-tool" class="btn btn-primary btn-lg">Start Speaker Cleaner</a>
+        <a href="/speaker-test/" class="btn btn-secondary btn-lg">Test My Speaker</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Cleaner Tool Anchor Section -->
+  <section id="cleaner-tool" class="tool-section container">
+    <SpeakerCleaner sequenceName="cleaner" title="Primary Speaker Cleaner" />
+  </section>
+
+  <AdPlaceholder slotId="1001" minHeight="250px" />
+
+  <!-- How It Works Section -->
+  <section class="how-it-works-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>How Speaker Cleaning Sounds Work</h2>
+        <p>Follow these 5 simple steps to safely eject moisture droplets and clear acoustic vents.</p>
+      </div>
+
+      <div class="steps-grid">
+        {howToSteps.map((step, idx) => (
+          <div class="step-card card">
+            <div class="step-num">{idx + 1}</div>
+            <h3>{step.name}</h3>
+            <p>{step.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Device Compatibility Section -->
+  <section class="devices-section container">
+    <div class="section-header">
+      <h2>Popular Device Speaker Guides</h2>
+      <p>Model-specific cleaning guides and acoustic port layouts for leading smartphones and laptops.</p>
+    </div>
+
+    <div class="devices-grid">
+      {featuredDevices.map((device) => (
+        <DeviceCard device={device} />
+      ))}
+    </div>
+  </section>
+
+  <AdPlaceholder slotId="1002" minHeight="250px" />
+
+  <!-- FAQ Section -->
+  <section class="container">
+    <FAQ items={faqs} />
+  </section>
+
+  <!-- Related Tools -->
+  <section class="container">
+    <RelatedTools currentToolId="speaker-cleaner" />
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-section {
+    padding: 4rem 0 3rem;
+    text-align: center;
+    background: radial-gradient(circle at 50% 20%, rgba(2, 132, 199, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
+  }
+
+  .hero-inner {
+    max-width: 840px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-headline {
+    margin-bottom: 1.25rem;
+    color: var(--color-text-main);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subheadline {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 2.25rem;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .tool-section {
+    margin: 3rem auto;
+  }
+
+  .how-it-works-section {
+    background: var(--color-surface);
+    border-y: 1px solid var(--color-card-border);
+    padding: 5rem 0;
+    margin: 4rem 0;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 3rem;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .step-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+
+  .step-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .step-card p {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+  }
+
+  .devices-section {
+    margin: 4rem auto;
+  }
+
+  .devices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero-section {
+      padding: 2.5rem 0 1.5rem;
+    }
+
+    .hero-subheadline {
+      font-size: 1.05rem;
+    }
+
+    .hero-cta-group {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .hero-cta-group .btn {
+      width: 100%;
+    }
+  }
+</style>
